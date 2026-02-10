@@ -51,7 +51,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
     
     // Simulate Success LED/Delay
     setTimeout(() => {
-      window.location.href = `/checkin/${formData.id}`;
+      window.location.href = `/${formData.id}`;
     }, 1000);
   };
 
@@ -121,13 +121,26 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs text-[var(--primary-accent)] uppercase mb-1">{t.adminHotelId}</label>
-                  <input 
-                    name="id"
-                    value={formData.id}
-                    disabled
-                    className="w-full bg-black border border-white/20 rounded p-3 text-white focus:border-[var(--primary-accent)] outline-none font-mono"
-                  />
+                  <label className="block text-xs text-[var(--primary-accent)] uppercase mb-1">{t.adminHotelId} (SLUG URL)</label>
+                  <div className="flex gap-2">
+                    <input 
+                      name="id"
+                      value={formData.id}
+                      onChange={handleChange}
+                      placeholder="ex: hotel-beta"
+                      className="flex-1 bg-black border border-white/20 rounded p-3 text-white focus:border-[var(--primary-accent)] outline-none font-mono"
+                    />
+                    <select 
+                      onChange={(e) => setFormData({...formData, id: e.target.value})}
+                      className="bg-black border border-white/20 rounded p-3 text-white focus:border-[var(--primary-accent)] outline-none text-xs w-24"
+                      value=""
+                    >
+                       <option value="" disabled>Trocar</option>
+                       <option value="alpha-plaza">Alpha</option>
+                       <option value="demo-hotel">Demo</option>
+                    </select>
+                  </div>
+                  <p className="text-[10px] text-gray-500 mt-1">Digite um novo ID para trocar de hotel.</p>
                 </div>
 
                 <div>
