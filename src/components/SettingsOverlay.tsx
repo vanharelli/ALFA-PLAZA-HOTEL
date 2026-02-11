@@ -145,6 +145,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
                 </div>
 
                 <div>
+                  <label className="block text-xs text-[var(--primary-accent)] uppercase mb-1">{t.adminDisplayTitle}</label>
+                  <input 
+                    name="name"
+                    value={formData.name || ''}
+                    onChange={handleChange}
+                    placeholder={t.adminDisplayTitle}
+                    className="w-full bg-black border border-white/20 rounded p-3 text-white focus:border-[var(--primary-accent)] outline-none"
+                  />
+                </div>
+
+                <div>
                   <label className="block text-xs text-[var(--primary-accent)] uppercase mb-1">{t.adminSubtitle}</label>
                   <input 
                     name="subtitle"
