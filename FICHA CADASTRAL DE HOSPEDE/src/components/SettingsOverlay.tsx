@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHotel } from '../context/HotelContext';
-import { X, Save, Settings, Lock, Globe } from 'lucide-react';
+import { X, Settings, Lock, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { translations, Language } from '../data/translations';
+import { translations, type Language } from '../data/translations';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -15,7 +15,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
   const [formData, setFormData] = useState(currentHotel);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pin, setPin] = useState('');
-  const [error, setError] = useState('');
   
   const t = translations[currentLanguage];
 
@@ -24,7 +23,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
       setFormData(currentHotel);
       setIsAuthenticated(false); // Reset auth on open
       setPin('');
-      setError('');
     }
   }, [isOpen, currentHotel]);
 
@@ -38,7 +36,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
     if (pin === '54321') {
       setIsAuthenticated(true);
     } else {
-      setError('Invalid PIN');
       setPin('');
     }
   };
@@ -183,7 +180,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
                     name="footerText"
                     value={formData.footerText || ''}
                     onChange={handleChange}
-                    placeholder="© 2026 Alpha Plaza Hotel..."
+                    placeholder="© 2026 Alfa Plaza Hotel..."
                     className="w-full bg-black border border-white/20 rounded p-3 text-white focus:border-[var(--primary-accent)] outline-none h-20 resize-none"
                   />
                 </div>

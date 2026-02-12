@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { HotelConfig, DEFAULT_HOTEL } from '../types/types';
+import { type HotelConfig, DEFAULT_HOTEL } from '../types/types';
 
 interface HotelContextType {
   currentHotel: HotelConfig;
@@ -54,7 +54,7 @@ export const HotelProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           }
 
           setCurrentHotel(hotel);
-        } else if (id === 'alpha-plaza') {
+        } else if (id === 'alfa-plaza') {
           const defaultWithDate = {
             ...DEFAULT_HOTEL,
             createdAt: new Date().toISOString()

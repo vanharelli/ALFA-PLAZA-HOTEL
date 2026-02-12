@@ -2,8 +2,8 @@ export type Language = 'PT' | 'EN' | 'ES';
 
 export const translations = {
   PT: {
-    title: "Protocolo de Identificação Digital",
-    subtitle: "Alpha Plaza Hotel",
+    title: "Check-in Digital",
+    subtitle: "Alfa Plaza Hotel",
     fullName: "Nome Completo do Titular",
     fullNamePlaceholder: "DIGITE SEU NOME",
     isForeigner: "É ESTRANGEIRO?",
@@ -58,7 +58,7 @@ export const translations = {
     errorPhone: "Telefone é obrigatório",
     
     // WhatsApp Message
-    waTitle: "NOVO PROTOCOLO DIGITAL - ALPHA PLAZA",
+    waTitle: "CHECK-IN DIGITAL - ALFA PLAZA HOTEL",
     waName: "TITULAR",
     waForeigner: "ESTRANGEIRO",
     waCountry: "PAÍS",
@@ -92,8 +92,8 @@ export const translations = {
     footerStateless: "FERRAMENTA EXCLUSIVA PARA GESTÃO DE CHECK-IN HOTELEIRO\n\nTecnologia Stateless & Zero-Knowledge. A responsabilidade pelo envio à FNRH (Lei 11.771/2008) compete administrativa e unicamente ao Estabelecimento.\n\nPOWERED BY MARKETELLI INTELLIGENCE",
   },
   EN: {
-    title: "Digital Identification Protocol",
-    subtitle: "Alpha Plaza Hotel",
+    title: "Digital Check-in",
+    subtitle: "Alfa Plaza Hotel",
     fullName: "Full Name of Holder",
     fullNamePlaceholder: "ENTER YOUR NAME",
     isForeigner: "ARE YOU A FOREIGNER?",
@@ -148,7 +148,7 @@ export const translations = {
     errorPhone: "Phone is required",
 
     // WhatsApp Message
-    waTitle: "NEW DIGITAL PROTOCOL - ALPHA PLAZA",
+    waTitle: "DIGITAL CHECK-IN - ALFA PLAZA HOTEL",
     waName: "HOLDER",
     waForeigner: "FOREIGNER",
     waCountry: "COUNTRY",
@@ -182,8 +182,8 @@ export const translations = {
     footerStateless: "EXCLUSIVE TOOL FOR HOTEL CHECK-IN MANAGEMENT\n\nStateless & Zero-Knowledge Technology. The responsibility for FNRH submission (Law 11.771/2008) lies administratively and solely with the Establishment.\n\nPOWERED BY MARKETELLI INTELLIGENCE"
   },
   ES: {
-    title: "Protocolo de Identificación Digital",
-    subtitle: "Alpha Plaza Hotel",
+    title: "Check-in Digital",
+    subtitle: "Alfa Plaza Hotel",
     fullName: "Nombre Completo del Titular",
     fullNamePlaceholder: "INGRESE SU NOMBRE",
     isForeigner: "¿ERES EXTRANJERO?",
@@ -238,7 +238,7 @@ export const translations = {
     errorPhone: "Teléfono es obligatorio",
 
     // WhatsApp Message
-    waTitle: "NUEVO PROTOCOLO DIGITAL - ALPHA PLAZA",
+    waTitle: "CHECK-IN DIGITAL - ALFA PLAZA HOTEL",
     waName: "TITULAR",
     waForeigner: "EXTRANJERO",
     waCountry: "PAÍS",
