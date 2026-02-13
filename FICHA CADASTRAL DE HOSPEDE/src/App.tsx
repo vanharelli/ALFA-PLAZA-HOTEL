@@ -9,6 +9,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<CheckInScreen />} />
+        <Route path="/check-in" element={<CheckInScreen />} />
+        <Route path="*" element={<CheckInScreen />} />
       </Routes>
     </Router>
   );
