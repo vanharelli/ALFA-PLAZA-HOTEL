@@ -21,25 +21,17 @@ export const useSystemArmor = () => {
     // 2. BLOQUEIO DE BOTÃO DIREITO (Context Menu)
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
+      e.stopPropagation();
       return false;
     };
 
-    // 3. ARMADILHA DE DEBUGGER (O "Loop da Morte")
-    // Se o cara conseguir abrir o Console, isso aqui trava o navegador dele
-    // num loop infinito de "Paused in Debugger".
+    // 3. ATIVANDO AS DEFESAS COM PRIORIDADE MÁXIMA (capture: true)
+    window.addEventListener('keydown', handleKeyDown, { capture: true });
+    window.addEventListener('contextmenu', handleContextMenu, { capture: true });
     
-    // ATIVANDO AS DEFESAS
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('contextmenu', handleContextMenu);
-    
-    // Só ativa a armadilha do debugger em Produção (pra não te travar)
-    if (import.meta.env.PROD) {
-        // Descomente a linha abaixo se quiser ser EXTREMAMENTE AGRESSIVO
-    }
-
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('contextmenu', handleContextMenu);
+      window.removeEventListener('keydown', handleKeyDown, { capture: true });
+      window.removeEventListener('contextmenu', handleContextMenu, { capture: true });
     };
   }, []);
 };
