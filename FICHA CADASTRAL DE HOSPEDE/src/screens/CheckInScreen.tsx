@@ -99,7 +99,7 @@ export const CheckInScreen: React.FC = () => {
         setIsLegalChecked(false);
     };
 
-    const inputClasses = "w-full p-3 bg-transparent border border-gold-500/70 rounded-lg text-gold-400 placeholder-gold-500/60 focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400 outline-none transition-all uppercase backdrop-blur-xl hover:bg-black/60 font-medium tracking-wide shadow-inner";
+    const inputClasses = "w-full p-3 bg-transparent border border-gold-500/70 rounded-lg text-white placeholder-white/70 focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400 outline-none transition-all uppercase backdrop-blur-xl hover:bg-black/60 font-medium tracking-wide shadow-inner";
     const labelClasses = "block text-xs font-bold text-white uppercase mb-1 tracking-wider";
 
     return (
@@ -295,7 +295,7 @@ export const CheckInScreen: React.FC = () => {
                             />
                         </div>
                          <div>
-                            <label className={labelClasses}>Nº Quarto (Opcional)</label>
+                            <label className={labelClasses}>Nº QUARTO</label>
                             <input
                                 name="roomNumber"
                                 value={formData.roomNumber}
