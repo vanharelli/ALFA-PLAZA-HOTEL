@@ -214,7 +214,7 @@ export const CheckInScreen: React.FC = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className={labelClasses}>Telefone / WhatsApp</label>
+                            <label className={labelClasses}>WhatsApp</label>
                             <IMaskInput
                                 mask="(00) 00000-0000"
                                 name="phone"
