@@ -148,12 +148,12 @@ export const LegalShield: React.FC<LegalShieldProps> = ({ isChecked, onChange })
                 </svg>
             </div>
             <div className="mt-4 px-6">
-                <p className="text-[10px] leading-tight font-bold text-white uppercase tracking-tighter text-center">
+                <p className="text-[10px] leading-tight text-white uppercase tracking-tighter text-center">
                     Protocolo de Privacidade Alfa Plaza Hotel.
                 </p>
-                <p className="mt-2 text-[11px] leading-relaxed font-bold text-white text-left">
+                <p className="mt-2 text-[11px] leading-relaxed text-white text-left">
                     Esta interface atua estritamente como um redirecionador facilitador para o 
-                    <span className="font-bold text-white"> Check-in via WhatsApp</span>. 
+                    <span className="text-white"> Check-in via WhatsApp</span>. 
                     O sistema <span className="text-[#D4AF37]">não realiza a coleta ou armazenamento</span> de dados pessoais. 
                     A segurança da informação é processada diretamente pelo canal oficial do hotel.
                 </p>
