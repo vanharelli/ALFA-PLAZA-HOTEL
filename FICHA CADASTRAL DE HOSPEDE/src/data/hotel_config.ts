@@ -10,7 +10,7 @@ export const DEFAULT_HOTEL: HotelConfig = {
   primaryColor: "#25c522", 
   
   // 3. CONTATO DA RECEPÇÃO
-  whatsapp: "55613263=9131", // ⚠️ COLOQUE O NÚMERO REAL AQUI
+  whatsapp: "556132639131", // ⚠️ COLOQUE O NÚMERO REAL AQUI
   email: "reservas@alfaplazahotel.com.br", // Ajustado para Alfa
   phone: "(61) 3263-9131",
   

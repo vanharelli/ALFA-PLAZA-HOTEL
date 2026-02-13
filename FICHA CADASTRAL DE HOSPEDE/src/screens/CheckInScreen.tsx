@@ -4,7 +4,7 @@ import { IMaskInput } from 'react-imask';
 import { DEFAULT_HOTEL } from '../data/hotel_config';
 import { fetchAddress } from '../logic/api/viacep';
 import { generateWhatsAppPayload } from '../logic/generators/vcard';
-import { LegalShield, LegalFooter } from '../components/security/LegalShield';
+import { LegalShield, LegalFooter, PrivacyLink } from '../components/security/LegalModal';
 
 export const CheckInScreen: React.FC = () => {
     const numberInputRef = useRef<HTMLInputElement>(null);
@@ -396,14 +396,6 @@ export const CheckInScreen: React.FC = () => {
                     )}
                 </div>
 
-                {/* Submit Button */}
-                <button
-                    onClick={handleSubmit}
-                    className="w-full bg-gold-600 hover:bg-gold-500 text-black font-bold py-4 rounded-xl shadow-lg hover:shadow-gold-500/20 transition-all uppercase tracking-widest text-sm transform hover:scale-[1.02] active:scale-[0.98]"
-                >
-                    Realizar Check-in
-                </button>
-
                 {/* Footer */}
                 <div className="mt-8 pt-6 border-t border-gold-600/10">
                     <LegalShield 
@@ -411,6 +403,22 @@ export const CheckInScreen: React.FC = () => {
                         onChange={() => setIsLegalChecked(!isLegalChecked)}
                         themeColor="gold"
                     />
+                    
+                    <PrivacyLink />
+
+                    {/* Submit Button */}
+                    <button
+                        onClick={handleSubmit}
+                        disabled={!isLegalChecked}
+                        className={`w-full mt-6 py-4 rounded-xl font-bold uppercase tracking-widest text-sm transition-all transform 
+                            ${isLegalChecked 
+                                ? 'bg-gold-600 hover:bg-gold-500 text-black shadow-lg hover:shadow-gold-500/20 hover:scale-[1.02] active:scale-[0.98] cursor-pointer' 
+                                : 'bg-gray-800/50 text-gray-500 cursor-not-allowed opacity-70 border border-white/5'
+                            }`}
+                    >
+                        Realizar Check-in
+                    </button>
+
                     <div className="mt-4">
                         <LegalFooter themeColor="gold" />
                     </div>
