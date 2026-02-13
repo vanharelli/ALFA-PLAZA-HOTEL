@@ -120,7 +120,7 @@ export const CheckInScreen: React.FC = () => {
                     alt="Logo Hotel" 
                     className="h-24 mb-6 drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] transition-transform hover:scale-105 duration-300"
                 />
-                <h1 className="text-3xl font-bold text-gold-500 uppercase tracking-[0.2em] mb-2 drop-shadow-2xl">
+                <h1 className="text-3xl font-bold text-gold-500 uppercase tracking-[0.2em] mb-2 drop-shadow-2xl [-webkit-text-stroke:1px_black]">
                     CHECK-IN DIGITAL
                 </h1>
                 <p className="text-gold-600/80 font-medium tracking-wide text-sm drop-shadow-lg">ALFA PLAZA HOTEL</p>
