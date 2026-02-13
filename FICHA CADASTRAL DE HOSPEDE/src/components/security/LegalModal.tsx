@@ -125,8 +125,8 @@ export const LegalShield: React.FC<LegalShieldProps> = ({ isChecked, onChange })
     };
 
     return (
-        <div className="flex items-center gap-4 p-5 bg-white/5 rounded-xl border border-white/10 mt-8 transition-colors hover:bg-white/[0.07]">
-            <div className="relative flex items-center">
+        <div className="flex flex-row items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/10 mt-6 transition-colors hover:bg-white/[0.07] w-full">
+            <div className="relative flex items-center shrink-0">
                 <input
                     type="checkbox"
                     id="legal-check"
@@ -147,11 +147,11 @@ export const LegalShield: React.FC<LegalShieldProps> = ({ isChecked, onChange })
                     <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
             </div>
-            <div className="mt-4 px-6">
-                <p className="text-[10px] leading-tight text-white uppercase tracking-tighter text-center">
+            <div className="px-2 w-full flex-1">
+                <p className="text-[10px] font-bold leading-tight text-white uppercase tracking-tighter text-left">
                     Protocolo de Privacidade Alfa Plaza Hotel.
                 </p>
-                <p className="mt-2 text-[11px] leading-relaxed text-white text-left">
+                <p className="mt-1 text-[9px] font-bold leading-tight text-white text-left">
                     Esta interface atua estritamente como um redirecionador facilitador para o 
                     <span className="text-white"> Check-in via WhatsApp</span>. 
                     O sistema <span className="text-[#D4AF37]">não realiza a coleta ou armazenamento</span> de dados pessoais. 
