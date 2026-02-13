@@ -35,7 +35,6 @@ export const useSystemArmor = () => {
     // Só ativa a armadilha do debugger em Produção (pra não te travar)
     if (import.meta.env.PROD) {
         // Descomente a linha abaixo se quiser ser EXTREMAMENTE AGRESSIVO
-        // antiDebug(); 
     }
 
     return () => {
