@@ -99,7 +99,7 @@ export const CheckInScreen: React.FC = () => {
         setIsLegalChecked(false);
     };
 
-    const inputClasses = "w-full p-3 bg-transparent border border-gold-500/70 rounded-lg text-gold-400 placeholder-gold-600/40 focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400 outline-none transition-all uppercase backdrop-blur-xl hover:bg-black/60 font-medium tracking-wide shadow-inner";
+    const inputClasses = "w-full p-3 bg-transparent border border-gold-500/70 rounded-lg text-gold-400 placeholder-gold-500/60 focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400 outline-none transition-all uppercase backdrop-blur-xl hover:bg-black/60 font-medium tracking-wide shadow-inner";
     const labelClasses = "block text-xs font-bold text-white uppercase mb-1 tracking-wider";
 
     return (
