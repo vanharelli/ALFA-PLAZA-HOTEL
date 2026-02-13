@@ -224,6 +224,17 @@ export const CheckInScreen: React.FC = () => {
                                 className={inputClasses}
                             />
                         </div>
+                        <div>
+                            <label className={labelClasses}>E-mail</label>
+                            <input
+                                name="email"
+                                type="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="seu@email.com"
+                                className={inputClasses}
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -304,17 +315,6 @@ export const CheckInScreen: React.FC = () => {
                                 className={inputClasses}
                             />
                         </div>
-                    </div>
-                     <div>
-                        <label className={labelClasses}>E-mail</label>
-                        <input
-                            name="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="seu@email.com"
-                            className={inputClasses}
-                        />
                     </div>
                 </div>
 
