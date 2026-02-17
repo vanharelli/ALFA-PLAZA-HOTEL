@@ -5,6 +5,7 @@ import { DEFAULT_HOTEL } from '../data/hotel_config';
 import { fetchAddress } from '../logic/api/viacep';
 import { generateWhatsAppPayload } from '../logic/generators/vcard';
 import { LegalShield, LegalFooter, PrivacyLink } from '../components/security/LegalModal';
+import { translations, type Language } from '../data/translations';
 
 export const CheckInScreen: React.FC = () => {
     const numberInputRef = useRef<HTMLInputElement>(null);
@@ -32,6 +33,9 @@ export const CheckInScreen: React.FC = () => {
     });
 
     const [isLegalChecked, setIsLegalChecked] = useState(false);
+    const [language, setLanguage] = useState<Language>('PT');
+
+    const t = translations[language];
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -121,13 +125,49 @@ export const CheckInScreen: React.FC = () => {
                     className="h-24 mb-6 drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] transition-transform hover:scale-105 duration-300"
                 />
                 <h1 className="text-3xl font-bold text-gold-500 uppercase tracking-[0.2em] mb-2 drop-shadow-2xl [-webkit-text-stroke:1px_black]">
-                    CHECK-IN DIGITAL
+                    {t.title.toUpperCase()}
                 </h1>
-                <p className="text-gold-600/80 font-medium tracking-wide text-sm drop-shadow-lg">ALFA PLAZA HOTEL</p>
+                <p className="text-gold-600/80 font-medium tracking-wide text-sm drop-shadow-lg">
+                    {t.subtitle.toUpperCase()}
+                </p>
             </div>
 
             {/* Glassmorphism Card */}
             <div className="w-full max-w-2xl rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] p-8 border border-gold-500/70 backdrop-blur-3xl bg-black/98 relative z-10">
+                <div className="flex justify-end mb-4">
+                    <div className="flex items-center gap-2 bg-black/40 border border-gold-500/40 rounded-full px-3 py-1">
+                        <button
+                            onClick={() => setLanguage('PT')}
+                            className={`text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded-full transition-all ${
+                                language === 'PT'
+                                    ? 'bg-gold-500 text-black shadow-[0_0_12px_rgba(212,175,55,0.4)]'
+                                    : 'text-gold-400 hover:text-gold-200'
+                            }`}
+                        >
+                            🇧🇷 PT
+                        </button>
+                        <button
+                            onClick={() => setLanguage('EN')}
+                            className={`text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded-full transition-all ${
+                                language === 'EN'
+                                    ? 'bg-gold-500 text-black shadow-[0_0_12px_rgba(212,175,55,0.4)]'
+                                    : 'text-gold-400 hover:text-gold-200'
+                            }`}
+                        >
+                            🇺🇸 EN
+                        </button>
+                        <button
+                            onClick={() => setLanguage('ES')}
+                            className={`text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded-full transition-all ${
+                                language === 'ES'
+                                    ? 'bg-gold-500 text-black shadow-[0_0_12px_rgba(212,175,55,0.4)]'
+                                    : 'text-gold-400 hover:text-gold-200'
+                            }`}
+                        >
+                            🇪🇸 ES
+                        </button>
+                    </div>
+                </div>
                 
                 {/* Personal Info */}
                 <div className="space-y-6 mb-8">
@@ -139,43 +179,56 @@ export const CheckInScreen: React.FC = () => {
                     </div>
 
                     <div>
-                        <label className={labelClasses}>Nome Completo</label>
+                        <label className={labelClasses}>{t.fullName}</label>
                         <input
                             name="fullName"
                             value={formData.fullName}
                             onChange={handleChange}
-                            placeholder="DIGITE SEU NOME"
+                            placeholder={t.fullNamePlaceholder}
                             className={inputClasses}
                         />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className={labelClasses}>É Estrangeiro?</label>
-                            <select
-                                name="isForeigner"
-                                value={formData.isForeigner ? 'yes' : 'no'}
-                                onChange={(e) => setFormData(prev => ({ ...prev, isForeigner: e.target.value === 'yes' }))}
-                                className={inputClasses}
-                            >
-                                <option value="no" className="bg-gray-900 text-white">NÃO</option>
-                                <option value="yes" className="bg-gray-900 text-white">SIM</option>
-                            </select>
+                            <label className={labelClasses}>{t.isForeigner}</label>
+                            <div className="flex items-center gap-3 mt-1">
+                                <button
+                                    onClick={() => setFormData(prev => ({ ...prev, isForeigner: true }))}
+                                    className={`px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all border tracking-wider ${
+                                        formData.isForeigner
+                                            ? 'bg-gold-500 text-black border-gold-500 shadow-[0_0_15px_rgba(212,175,55,0.4)]'
+                                            : 'bg-transparent text-gold-600 border-gold-600/30 hover:bg-gold-600/10'
+                                    }`}
+                                >
+                                    {t.yes}
+                                </button>
+                                <button
+                                    onClick={() => setFormData(prev => ({ ...prev, isForeigner: false }))}
+                                    className={`px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all border tracking-wider ${
+                                        !formData.isForeigner
+                                            ? 'bg-gold-500 text-black border-gold-500 shadow-[0_0_15px_rgba(212,175,55,0.4)]'
+                                            : 'bg-transparent text-gold-600 border-gold-600/30 hover:bg-gold-600/10'
+                                    }`}
+                                >
+                                    {t.no}
+                                </button>
+                            </div>
                         </div>
                         {formData.isForeigner ? (
                              <div>
-                                <label className={labelClasses}>País de Origem</label>
+                                <label className={labelClasses}>{t.country}</label>
                                 <input
                                     name="passportCountry"
                                     value={formData.passportCountry}
                                     onChange={handleChange}
-                                    placeholder="PAÍS"
+                                    placeholder={t.countryPlaceholder}
                                     className={inputClasses}
                                 />
                             </div>
                         ) : (
                             <div>
-                                <label className={labelClasses}>CPF</label>
+                                <label className={labelClasses}>{t.cpf}</label>
                                 <IMaskInput
                                     mask="000.000.000-00"
                                     name="cpf"
@@ -187,34 +240,33 @@ export const CheckInScreen: React.FC = () => {
                             </div>
                         )}
                     </div>
-                     {formData.isForeigner ? (
+                    {formData.isForeigner && (
                         <div>
-                            <label className={labelClasses}>Passaporte / ID</label>
+                            <label className={labelClasses}>{t.passport}</label>
                             <input
                                 name="passportId"
                                 value={formData.passportId}
                                 onChange={handleChange}
-                                placeholder="NÚMERO DO DOCUMENTO"
-                                className={inputClasses}
-                            />
-                        </div>
-                    ) : (
-                        <div>
-                            <label className={labelClasses}>Data de Nascimento</label>
-                            <IMaskInput
-                                mask="00/00/0000"
-                                name="birthDate"
-                                value={formData.birthDate}
-                                onChange={handleChange}
-                                placeholder="DD/MM/AAAA"
+                                placeholder={t.passportPlaceholder}
                                 className={inputClasses}
                             />
                         </div>
                     )}
+                    <div>
+                        <label className={labelClasses}>{t.birthDate}</label>
+                        <IMaskInput
+                            mask="00/00/0000"
+                            name="birthDate"
+                            value={formData.birthDate}
+                            onChange={handleChange}
+                            placeholder={t.birthDatePlaceholder}
+                            className={inputClasses}
+                        />
+                    </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className={labelClasses}>WhatsApp</label>
+                            <label className={labelClasses}>{t.phone}</label>
                             <IMaskInput
                                 mask="(00) 00000-0000"
                                 name="phone"
@@ -225,13 +277,13 @@ export const CheckInScreen: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className={labelClasses}>E-mail</label>
+                            <label className={labelClasses}>{t.email}</label>
                             <input
                                 name="email"
                                 type="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                placeholder="seu@email.com"
+                                placeholder={t.emailPlaceholder}
                                 className={inputClasses}
                             />
                         </div>
@@ -243,13 +295,13 @@ export const CheckInScreen: React.FC = () => {
                     <div className="flex items-center justify-between border-b border-gold-500/70 pb-3">
                         <h2 className="flex items-center gap-3 text-lg font-bold text-white">
                             <MapPin className="text-gold-400" size={20} />
-                            Endereço
+                            {t.address}
                         </h2>
                     </div>
 
                     <div className="grid grid-cols-3 gap-4">
                         <div className="col-span-1">
-                            <label className={labelClasses}>CEP</label>
+                            <label className={labelClasses}>{t.zipCode}</label>
                             <IMaskInput
                                 mask="00000-000"
                                 name="zipCode"
@@ -260,12 +312,12 @@ export const CheckInScreen: React.FC = () => {
                             />
                         </div>
                          <div className="col-span-2">
-                            <label className={labelClasses}>Cidade</label>
+                            <label className={labelClasses}>{t.city}</label>
                             <input
                                 name="city"
                                 value={formData.city}
                                 onChange={handleChange}
-                                placeholder="CIDADE"
+                                placeholder={t.cityPlaceholder}
                                 className={inputClasses}
                             />
                         </div>
@@ -273,17 +325,17 @@ export const CheckInScreen: React.FC = () => {
 
                     <div className="grid grid-cols-4 gap-4">
                         <div className="col-span-3">
-                            <label className={labelClasses}>Endereço</label>
+                            <label className={labelClasses}>{t.address}</label>
                             <input
                                 name="address"
                                 value={formData.address}
                                 onChange={handleChange}
-                                placeholder="RUA, AV..."
+                                placeholder={t.addressPlaceholder}
                                 className={inputClasses}
                             />
                         </div>
                         <div className="col-span-1">
-                            <label className={labelClasses}>Nº</label>
+                            <label className={labelClasses}>{t.number}</label>
                             <input
                                 ref={numberInputRef}
                                 name="number"
@@ -296,22 +348,22 @@ export const CheckInScreen: React.FC = () => {
                     </div>
                      <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className={labelClasses}>Estado</label>
+                            <label className={labelClasses}>{t.state}</label>
                             <input
                                 name="state"
                                 value={formData.state}
                                 onChange={handleChange}
-                                placeholder="UF"
+                                placeholder={t.statePlaceholder}
                                 className={inputClasses}
                             />
                         </div>
                          <div>
-                            <label className={labelClasses}>Nº QUARTO</label>
+                            <label className={labelClasses}>{t.roomNumber}</label>
                             <input
                                 name="roomNumber"
                                 value={formData.roomNumber}
                                 onChange={handleChange}
-                                placeholder="101"
+                                placeholder={t.roomNumberPlaceholder}
                                 className={inputClasses}
                             />
                         </div>
@@ -323,7 +375,7 @@ export const CheckInScreen: React.FC = () => {
                     <div className="flex items-center justify-between border-b border-gold-500/70 pb-3">
                         <h2 className="flex items-center gap-3 text-lg font-bold text-white">
                             <Car className="text-gold-400" size={20} />
-                            VAI USAR A GARAGEM?
+                            {t.hasVehicle.toUpperCase()}
                         </h2>
                         <div className="flex items-center gap-3">
                             <button
@@ -352,43 +404,43 @@ export const CheckInScreen: React.FC = () => {
                     {formData.hasVehicle && (
                         <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-4 duration-300">
                             <div>
-                                <label className={labelClasses}>Modelo</label>
+                                    <label className={labelClasses}>{t.vehicleModel}</label>
                                 <input
                                     name="vehicleModel"
                                     value={formData.vehicleModel}
                                     onChange={handleChange}
-                                    placeholder="MODELO"
+                                        placeholder={t.vehicleModelPlaceholder}
                                     className={inputClasses}
                                 />
                             </div>
                             <div>
-                                <label className={labelClasses}>Cor</label>
+                                    <label className={labelClasses}>{t.vehicleColor}</label>
                                 <input
                                     name="vehicleColor"
                                     value={formData.vehicleColor}
                                     onChange={handleChange}
-                                    placeholder="COR"
+                                        placeholder={t.vehicleColorPlaceholder}
                                     className={inputClasses}
                                 />
                             </div>
                             <div>
-                                <label className={labelClasses}>Placa</label>
+                                    <label className={labelClasses}>{t.vehiclePlate}</label>
                                 <input
                                     name="vehiclePlate"
                                     value={formData.vehiclePlate}
                                     onChange={handleChange}
-                                    placeholder="ABC-1234"
+                                        placeholder={t.vehiclePlatePlaceholder}
                                     className={inputClasses}
                                 />
                             </div>
                             <div>
-                                <label className={labelClasses}>Saída Prevista</label>
+                                    <label className={labelClasses}>{t.vehicleExitTime}</label>
                                 <IMaskInput
                                     mask="00:00"
                                     name="vehicleExitTime"
                                     value={formData.vehicleExitTime}
                                     onChange={handleChange}
-                                    placeholder="00:00"
+                                        placeholder={t.vehicleExitTimePlaceholder}
                                     className={inputClasses}
                                 />
                             </div>
@@ -415,7 +467,7 @@ export const CheckInScreen: React.FC = () => {
                                 : 'bg-gray-800/50 text-gray-500 cursor-not-allowed opacity-70 border border-white/5'
                             }`}
                     >
-                        Realizar Check-in
+                        {t.submitButton}
                     </button>
 
                     <div className="mt-4">
