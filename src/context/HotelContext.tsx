@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { HotelConfig, DEFAULT_HOTEL } from '../types/types';
+import { type HotelConfig, DEFAULT_HOTEL } from '../types/types';
 
 interface HotelContextType {
   currentHotel: HotelConfig;
@@ -53,30 +53,14 @@ export const HotelProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             saveHotelToDB(hotel);
           }
 
-          // Backfill createdAt for existing hotels to start trial tracking
-          if (!hotel.createdAt) {
-            hotel.createdAt = new Date().toISOString();
-            saveHotelToDB(hotel);
-          }
           setCurrentHotel(hotel);
-        } else if (id === 'alpha-plaza') {
+        } else if (id === 'alfa-plaza') {
           const defaultWithDate = {
             ...DEFAULT_HOTEL,
             createdAt: new Date().toISOString()
           };
           setCurrentHotel(defaultWithDate);
           saveHotelToDB(defaultWithDate); // Seed default
-        } else if (id === 'demo-hotel') {
-          const demoConfig: HotelConfig = {
-            ...DEFAULT_HOTEL,
-            id: 'demo-hotel',
-            name: 'Demo Hotel',
-            subtitle: 'Demonstração do Sistema',
-            primaryColor: '#D4AF37', // Gold
-            createdAt: new Date().toISOString()
-          };
-          setCurrentHotel(demoConfig);
-          saveHotelToDB(demoConfig);
         } else {
           // Auto-create template for new IDs
           const newHotel: HotelConfig = {

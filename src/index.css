@@ -35,3 +35,22 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #D4AF37;
 }
+/* BLINDAGEM VISUAL */
+body {
+  -webkit-user-select: none !important; /* Chrome/Safari */
+  -moz-user-select: none !important; /* Firefox */
+  -ms-user-select: none !important; /* IE/Edge */
+  user-select: none !important; /* Padrão */
+  -webkit-touch-callout: none !important; /* iOS Safari */
+}
+
+img {
+  -webkit-user-drag: none !important; /* Impede arrastar imagem */
+  pointer-events: none; /* Impede clicar/salvar imagem */
+}
+
+/* Libera seleção apenas em campos de input para o cliente conseguir digitar */
+input, textarea {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}

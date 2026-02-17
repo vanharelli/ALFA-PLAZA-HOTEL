@@ -1,16 +1,13 @@
 import React, { useState, useRef } from 'react';
-import { User, MapPin, Phone, Car } from 'lucide-react';
+import { User, MapPin, Car } from 'lucide-react';
 import { IMaskInput } from 'react-imask';
-// import { useGuest } from '../context/GuestContext'; // REMOVED
 import { DEFAULT_HOTEL } from '../data/hotel_config';
 import { fetchAddress } from '../logic/api/viacep';
 import { generateWhatsAppPayload } from '../logic/generators/vcard';
-import { LegalShield, LegalFooter } from '../components/security/LegalShield';
-import { Link } from 'react-router-dom';
+import { LegalShield, LegalFooter, PrivacyLink } from '../components/security/LegalModal';
+import { translations, type Language } from '../data/translations';
 
 export const CheckInScreen: React.FC = () => {
-    // const { setGuestData } = useGuest(); // REMOVED: Context Dependency
-    const [loadingAddress, setLoadingAddress] = useState(false);
     const numberInputRef = useRef<HTMLInputElement>(null);
 
     const [formData, setFormData] = useState({
@@ -36,12 +33,12 @@ export const CheckInScreen: React.FC = () => {
     });
 
     const [isLegalChecked, setIsLegalChecked] = useState(false);
-    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [language, setLanguage] = useState<Language>('PT');
+
+    const t = translations[language];
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-
-
 
         // Zero-latency Address Fetch
         if (name === 'zipCode') {
@@ -55,9 +52,7 @@ export const CheckInScreen: React.FC = () => {
     };
 
     const handleFetchAddress = async (cep: string) => {
-        setLoadingAddress(true);
         const address = await fetchAddress(cep);
-        setLoadingAddress(false);
 
         if (address) {
             setFormData(prev => ({
@@ -80,15 +75,10 @@ export const CheckInScreen: React.FC = () => {
         const payload = generateWhatsAppPayload(formData);
         const whatsappUrl = `https://wa.me/${DEFAULT_HOTEL.whatsapp}?text=${encodeURIComponent(payload)}`;
 
-        // 2. Save Context & Unlock Pillar 2 (Atomic)
-        // setGuestData(formData.fullName, formData.roomNumber); // REMOVED
-        // localStorage.setItem('unlockedPilar2', 'true'); // REMOVED
-        // window.dispatchEvent(new Event('storage')); // Sync across tabs/windows // REMOVED
+        // 2. Open WhatsApp
+        window.location.href = whatsappUrl;
 
-        // 3. Open WhatsApp
-        window.open(whatsappUrl, '_blank');
-
-        // 4. Wipe Data (Stateless)
+        // 3. Wipe Data (Stateless)
         setFormData({
             fullName: '',
             isForeigner: false,
@@ -113,68 +103,132 @@ export const CheckInScreen: React.FC = () => {
         setIsLegalChecked(false);
     };
 
-    const inputClasses = "w-full p-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-gold-500/50 focus:border-gold-500 outline-none transition-all uppercase backdrop-blur-sm";
-    const labelClasses = "block text-xs font-bold text-gray-400 uppercase mb-1 tracking-wider";
+    const inputClasses = "w-full p-3 bg-transparent border border-gold-500/70 rounded-lg text-white placeholder-white/70 focus:ring-2 focus:ring-gold-400/50 focus:border-gold-400 outline-none transition-all uppercase backdrop-blur-xl hover:bg-black/60 font-medium tracking-wide shadow-inner";
+    const labelClasses = "block text-xs font-bold text-white uppercase mb-1 tracking-wider";
 
     return (
-        <div className="min-h-screen flex flex-col items-center py-10 px-4 bg-transparent">
+        <div 
+            className="min-h-screen flex flex-col items-center py-10 px-4 bg-cover bg-center bg-fixed bg-no-repeat"
+            style={{
+                backgroundImage: `url(${DEFAULT_HOTEL.background})`,
+                backgroundColor: '#000' // Fallback
+            }}
+        >
+            {/* Overlay Gradient for Readability */}
+            <div className="absolute inset-0 bg-black/90 z-0 pointer-events-none" />
             
             {/* Header */}
-            <div className="text-center mb-8 relative z-10">
-                <h1 className="text-2xl font-bold text-white uppercase tracking-[0.2em] mb-2 drop-shadow-lg">
-                    FICHA DE CHECK-IN
+            <div className="text-center mb-8 relative z-10 flex flex-col items-center">
+                <img 
+                    src={DEFAULT_HOTEL.logo} 
+                    alt="Logo Hotel" 
+                    className="h-24 mb-6 drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] transition-transform hover:scale-105 duration-300"
+                />
+                <h1 className="text-3xl font-bold text-gold-500 uppercase tracking-[0.2em] mb-2 drop-shadow-2xl [-webkit-text-stroke:1px_black]">
+                    {t.title.toUpperCase()}
                 </h1>
-                <p className="text-gold-500 font-medium tracking-wide text-sm opacity-90">{DEFAULT_HOTEL.subtitle}</p>
+                <p className="text-gold-600/80 font-medium tracking-wide text-sm drop-shadow-lg">
+                    {t.subtitle.toUpperCase()}
+                </p>
             </div>
 
             {/* Glassmorphism Card */}
-            <div className="w-full max-w-2xl rounded-2xl shadow-2xl p-8 border-t border-white/10 backdrop-blur-xl bg-black/40 relative z-10">
+            <div className="w-full max-w-2xl rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] p-8 border border-gold-500/70 backdrop-blur-3xl bg-black/98 relative z-10">
+                <div className="flex justify-end mb-4">
+                    <div className="flex items-center gap-2 bg-black/40 border border-gold-500/40 rounded-full px-3 py-1">
+                        <button
+                            onClick={() => setLanguage('PT')}
+                            className={`text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded-full transition-all ${
+                                language === 'PT'
+                                    ? 'bg-gold-500 text-black shadow-[0_0_12px_rgba(212,175,55,0.4)]'
+                                    : 'text-gold-400 hover:text-gold-200'
+                            }`}
+                        >
+                            🇧🇷 PT
+                        </button>
+                        <button
+                            onClick={() => setLanguage('EN')}
+                            className={`text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded-full transition-all ${
+                                language === 'EN'
+                                    ? 'bg-gold-500 text-black shadow-[0_0_12px_rgba(212,175,55,0.4)]'
+                                    : 'text-gold-400 hover:text-gold-200'
+                            }`}
+                        >
+                            🇺🇸 EN
+                        </button>
+                        <button
+                            onClick={() => setLanguage('ES')}
+                            className={`text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded-full transition-all ${
+                                language === 'ES'
+                                    ? 'bg-gold-500 text-black shadow-[0_0_12px_rgba(212,175,55,0.4)]'
+                                    : 'text-gold-400 hover:text-gold-200'
+                            }`}
+                        >
+                            🇪🇸 ES
+                        </button>
+                    </div>
+                </div>
                 
                 {/* Personal Info */}
                 <div className="space-y-6 mb-8">
-                    <h2 className="flex items-center gap-3 text-lg font-bold text-white/90 border-b border-white/10 pb-3">
-                        <User className="text-gold-500" size={20} />
-                        Dados Pessoais
-                    </h2>
+                    <div className="flex items-center justify-between border-b border-gold-500/70 pb-3">
+                        <h2 className="flex items-center gap-3 text-lg font-bold text-white">
+                            <User className="text-gold-400" size={20} />
+                            Dados Pessoais
+                        </h2>
+                    </div>
 
                     <div>
-                        <label className={labelClasses}>Nome Completo</label>
+                        <label className={labelClasses}>{t.fullName}</label>
                         <input
                             name="fullName"
                             value={formData.fullName}
                             onChange={handleChange}
-                            placeholder="DIGITE SEU NOME"
+                            placeholder={t.fullNamePlaceholder}
                             className={inputClasses}
                         />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className={labelClasses}>É Estrangeiro?</label>
-                            <select
-                                name="isForeigner"
-                                value={formData.isForeigner ? 'yes' : 'no'}
-                                onChange={(e) => setFormData(prev => ({ ...prev, isForeigner: e.target.value === 'yes' }))}
-                                className={inputClasses}
-                            >
-                                <option value="no" className="bg-gray-900 text-white">NÃO</option>
-                                <option value="yes" className="bg-gray-900 text-white">SIM</option>
-                            </select>
+                            <label className={labelClasses}>{t.isForeigner}</label>
+                            <div className="flex items-center gap-3 mt-1">
+                                <button
+                                    onClick={() => setFormData(prev => ({ ...prev, isForeigner: true }))}
+                                    className={`px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all border tracking-wider ${
+                                        formData.isForeigner
+                                            ? 'bg-gold-500 text-black border-gold-500 shadow-[0_0_15px_rgba(212,175,55,0.4)]'
+                                            : 'bg-transparent text-gold-600 border-gold-600/30 hover:bg-gold-600/10'
+                                    }`}
+                                >
+                                    {t.yes}
+                                </button>
+                                <button
+                                    onClick={() => setFormData(prev => ({ ...prev, isForeigner: false }))}
+                                    className={`px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all border tracking-wider ${
+                                        !formData.isForeigner
+                                            ? 'bg-gold-500 text-black border-gold-500 shadow-[0_0_15px_rgba(212,175,55,0.4)]'
+                                            : 'bg-transparent text-gold-600 border-gold-600/30 hover:bg-gold-600/10'
+                                    }`}
+                                >
+                                    {t.no}
+                                </button>
+                            </div>
                         </div>
                         {formData.isForeigner ? (
                              <div>
-                                <label className={labelClasses}>País de Origem</label>
+                                <label className={labelClasses}>{t.country}</label>
                                 <input
                                     name="passportCountry"
                                     value={formData.passportCountry}
                                     onChange={handleChange}
-                                    placeholder="PAÍS"
+                                    placeholder={t.countryPlaceholder}
                                     className={inputClasses}
                                 />
                             </div>
                         ) : (
                             <div>
-                                <label className={labelClasses}>CPF</label>
+                                <label className={labelClasses}>{t.cpf}</label>
                                 <IMaskInput
                                     mask="000.000.000-00"
                                     name="cpf"
@@ -186,72 +240,33 @@ export const CheckInScreen: React.FC = () => {
                             </div>
                         )}
                     </div>
-                </div>
-
-                {/* Address */}
-                <div className="space-y-6 mb-8">
-                    <h2 className="flex items-center gap-3 text-lg font-bold text-white/90 border-b border-white/10 pb-3">
-                        <MapPin className="text-gold-500" size={20} />
-                        Endereço
-                    </h2>
-
-                    <div className="grid grid-cols-3 gap-4">
-                        <div className="col-span-1">
-                            <label className={labelClasses}>CEP</label>
-                            <IMaskInput
-                                mask="00000-000"
-                                name="zipCode"
-                                value={formData.zipCode}
-                                onChange={handleChange}
-                                placeholder="00000-000"
-                                className={`${inputClasses} ${loadingAddress ? 'animate-pulse bg-white/10' : ''}`}
-                            />
-                        </div>
-                        <div className="col-span-2">
-                            <label className={labelClasses}>Cidade / Estado</label>
-                            <input
-                                value={`${formData.city} ${formData.state ? '/' + formData.state : ''}`}
-                                readOnly
-                                className={`${inputClasses} opacity-70 cursor-not-allowed`}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-4">
-                        <div className="col-span-2">
-                            <label className={labelClasses}>Endereço</label>
-                            <input
-                                name="address"
-                                value={formData.address}
-                                onChange={handleChange}
-                                placeholder="RUA / AVENIDA"
-                                className={inputClasses}
-                            />
-                        </div>
+                    {formData.isForeigner && (
                         <div>
-                            <label className={labelClasses}>Número</label>
+                            <label className={labelClasses}>{t.passport}</label>
                             <input
-                                ref={numberInputRef}
-                                name="number"
-                                value={formData.number}
+                                name="passportId"
+                                value={formData.passportId}
                                 onChange={handleChange}
-                                placeholder="Nº"
+                                placeholder={t.passportPlaceholder}
                                 className={inputClasses}
                             />
                         </div>
+                    )}
+                    <div>
+                        <label className={labelClasses}>{t.birthDate}</label>
+                        <IMaskInput
+                            mask="00/00/0000"
+                            name="birthDate"
+                            value={formData.birthDate}
+                            onChange={handleChange}
+                            placeholder={t.birthDatePlaceholder}
+                            className={inputClasses}
+                        />
                     </div>
-                </div>
 
-                {/* Contact */}
-                <div className="space-y-6 mb-8">
-                    <h2 className="flex items-center gap-3 text-lg font-bold text-white/90 border-b border-white/10 pb-3">
-                        <Phone className="text-gold-500" size={20} />
-                        Contato & Estadia
-                    </h2>
-                    
                     <div className="grid grid-cols-2 gap-4">
-                         <div>
-                            <label className={labelClasses}>WhatsApp</label>
+                        <div>
+                            <label className={labelClasses}>{t.phone}</label>
                             <IMaskInput
                                 mask="(00) 00000-0000"
                                 name="phone"
@@ -262,131 +277,204 @@ export const CheckInScreen: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className={labelClasses}>Nº Quarto (Opcional)</label>
+                            <label className={labelClasses}>{t.email}</label>
+                            <input
+                                name="email"
+                                type="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder={t.emailPlaceholder}
+                                className={inputClasses}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Address */}
+                <div className="space-y-6 mb-8">
+                    <div className="flex items-center justify-between border-b border-gold-500/70 pb-3">
+                        <h2 className="flex items-center gap-3 text-lg font-bold text-white">
+                            <MapPin className="text-gold-400" size={20} />
+                            {t.address}
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-4">
+                        <div className="col-span-1">
+                            <label className={labelClasses}>{t.zipCode}</label>
+                            <IMaskInput
+                                mask="00000-000"
+                                name="zipCode"
+                                value={formData.zipCode}
+                                onChange={handleChange}
+                                placeholder="00000-000"
+                                className={inputClasses}
+                            />
+                        </div>
+                         <div className="col-span-2">
+                            <label className={labelClasses}>{t.city}</label>
+                            <input
+                                name="city"
+                                value={formData.city}
+                                onChange={handleChange}
+                                placeholder={t.cityPlaceholder}
+                                className={inputClasses}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-4">
+                        <div className="col-span-3">
+                            <label className={labelClasses}>{t.address}</label>
+                            <input
+                                name="address"
+                                value={formData.address}
+                                onChange={handleChange}
+                                placeholder={t.addressPlaceholder}
+                                className={inputClasses}
+                            />
+                        </div>
+                        <div className="col-span-1">
+                            <label className={labelClasses}>{t.number}</label>
+                            <input
+                                ref={numberInputRef}
+                                name="number"
+                                value={formData.number}
+                                onChange={handleChange}
+                                placeholder="123"
+                                className={inputClasses}
+                            />
+                        </div>
+                    </div>
+                     <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className={labelClasses}>{t.state}</label>
+                            <input
+                                name="state"
+                                value={formData.state}
+                                onChange={handleChange}
+                                placeholder={t.statePlaceholder}
+                                className={inputClasses}
+                            />
+                        </div>
+                         <div>
+                            <label className={labelClasses}>{t.roomNumber}</label>
                             <input
                                 name="roomNumber"
                                 value={formData.roomNumber}
                                 onChange={handleChange}
-                                placeholder="101"
+                                placeholder={t.roomNumberPlaceholder}
                                 className={inputClasses}
                             />
                         </div>
                     </div>
-                     <div>
-                        <label className={labelClasses}>E-mail</label>
-                        <input
-                            name="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="seu@email.com"
-                            className={inputClasses}
-                        />
-                    </div>
                 </div>
 
-                 {/* Vehicle */}
-                 <div className="space-y-6 mb-8">
-                    <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                        <h2 className="flex items-center gap-3 text-lg font-bold text-white/90">
-                            <Car className="text-gold-500" size={20} />
-                            Vai usar o estabelecimento?
+                {/* Vehicle */}
+                <div className="space-y-6 mb-8">
+                    <div className="flex items-center justify-between border-b border-gold-500/70 pb-3">
+                        <h2 className="flex items-center gap-3 text-lg font-bold text-white">
+                            <Car className="text-gold-400" size={20} />
+                            {t.hasVehicle.toUpperCase()}
                         </h2>
-                        <div className="flex items-center gap-3 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
-                             <label className="text-xs font-bold text-gray-400 uppercase tracking-wide cursor-pointer select-none" htmlFor="hasVehicle">
-                                 POSSUI VEÍCULO?
-                             </label>
-                             <input 
-                                id="hasVehicle"
-                                type="checkbox"
-                                checked={formData.hasVehicle}
-                                onChange={(e) => setFormData(prev => ({ ...prev, hasVehicle: e.target.checked }))}
-                                className="w-4 h-4 text-gold-500 rounded bg-white/10 border-white/20 focus:ring-offset-black focus:ring-gold-500 cursor-pointer"
-                             />
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={() => setFormData(prev => ({ ...prev, hasVehicle: true }))}
+                                className={`px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all border tracking-wider ${
+                                    formData.hasVehicle 
+                                    ? 'bg-gold-500 text-black border-gold-500 shadow-[0_0_15px_rgba(212,175,55,0.4)]' 
+                                    : 'bg-transparent text-gold-600 border-gold-600/30 hover:bg-gold-600/10'
+                                }`}
+                            >
+                                SIM
+                            </button>
+                            <button
+                                onClick={() => setFormData(prev => ({ ...prev, hasVehicle: false }))}
+                                className={`px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all border tracking-wider ${
+                                    !formData.hasVehicle 
+                                    ? 'bg-gold-500 text-black border-gold-500 shadow-[0_0_15px_rgba(212,175,55,0.4)]' 
+                                    : 'bg-transparent text-gold-600 border-gold-600/30 hover:bg-gold-600/10'
+                                }`}
+                            >
+                                NÃO
+                            </button>
                         </div>
                     </div>
 
                     {formData.hasVehicle && (
-                        <div className="grid grid-cols-2 gap-4 bg-white/5 p-4 rounded-xl border border-white/5 animate-in fade-in slide-in-from-top-4 duration-300">
-                            <input
-                                name="vehicleModel"
-                                value={formData.vehicleModel}
-                                onChange={handleChange}
-                                placeholder="MODELO"
-                                className={inputClasses}
-                            />
-                            <input
-                                name="vehicleColor"
-                                value={formData.vehicleColor}
-                                onChange={handleChange}
-                                placeholder="COR"
-                                className={inputClasses}
-                            />
-                            <input
-                                name="vehiclePlate"
-                                value={formData.vehiclePlate}
-                                onChange={handleChange}
-                                placeholder="PLACA"
-                                className={inputClasses}
-                            />
-                             <IMaskInput
-                                mask="00:00"
-                                name="vehicleExitTime"
-                                value={formData.vehicleExitTime}
-                                onChange={handleChange}
-                                placeholder="SAÍDA (HH:MM)"
-                                className={inputClasses}
-                            />
+                        <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-4 duration-300">
+                            <div>
+                                    <label className={labelClasses}>{t.vehicleModel}</label>
+                                <input
+                                    name="vehicleModel"
+                                    value={formData.vehicleModel}
+                                    onChange={handleChange}
+                                        placeholder={t.vehicleModelPlaceholder}
+                                    className={inputClasses}
+                                />
+                            </div>
+                            <div>
+                                    <label className={labelClasses}>{t.vehicleColor}</label>
+                                <input
+                                    name="vehicleColor"
+                                    value={formData.vehicleColor}
+                                    onChange={handleChange}
+                                        placeholder={t.vehicleColorPlaceholder}
+                                    className={inputClasses}
+                                />
+                            </div>
+                            <div>
+                                    <label className={labelClasses}>{t.vehiclePlate}</label>
+                                <input
+                                    name="vehiclePlate"
+                                    value={formData.vehiclePlate}
+                                    onChange={handleChange}
+                                        placeholder={t.vehiclePlatePlaceholder}
+                                    className={inputClasses}
+                                />
+                            </div>
+                            <div>
+                                    <label className={labelClasses}>{t.vehicleExitTime}</label>
+                                <IMaskInput
+                                    mask="00:00"
+                                    name="vehicleExitTime"
+                                    value={formData.vehicleExitTime}
+                                    onChange={handleChange}
+                                        placeholder={t.vehicleExitTimePlaceholder}
+                                    className={inputClasses}
+                                />
+                            </div>
                         </div>
                     )}
                 </div>
 
-                <LegalShield isChecked={isLegalChecked} onChange={setIsLegalChecked} />
+                {/* Footer */}
+                <div className="mt-8 pt-6 border-t border-gold-600/10">
+                    <LegalShield 
+                        isChecked={isLegalChecked}
+                        onChange={() => setIsLegalChecked(!isLegalChecked)}
+                    />
+                    
+                    <PrivacyLink />
 
-                <button
-                    onClick={handleSubmit}
-                    disabled={!isLegalChecked}
-                    className={`w-full mt-8 py-4 rounded-xl font-bold text-white tracking-[0.2em] transition-all duration-300 border border-transparent
-                        ${isLegalChecked 
-                            ? 'bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] transform hover:-translate-y-0.5' 
-                            : 'bg-white/10 text-gray-500 cursor-not-allowed border-white/5'}
-                    `}
-                >
-                    VALIDAR ACESSO
-                </button>
+                    {/* Submit Button */}
+                    <button
+                        onClick={handleSubmit}
+                        disabled={!isLegalChecked}
+                        className={`w-full mt-6 py-4 rounded-xl font-bold uppercase tracking-widest text-sm transition-all transform 
+                            ${isLegalChecked 
+                                ? 'bg-gold-600 hover:bg-gold-500 text-black shadow-lg hover:shadow-gold-500/20 hover:scale-[1.02] active:scale-[0.98] cursor-pointer' 
+                                : 'bg-gray-800/50 text-gray-500 cursor-not-allowed opacity-70 border border-white/5'
+                            }`}
+                    >
+                        {t.submitButton}
+                    </button>
 
-                <div className="mt-6 text-center">
-                    <Link to="/termos" className="text-xs text-gold-500/80 hover:text-gold-400 hover:underline tracking-wide transition-colors">
-                        Ver Termos de Uso Completos
-                    </Link>
-                </div>
-
-            </div>
-
-            <LegalFooter />
-
-            {/* Admin Color Picker Modal */}
-            {showColorPicker && (
-                <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in duration-200">
-                    <div className="bg-[#1a1a1a] p-6 rounded-2xl w-80 text-center border border-white/10 shadow-2xl">
-                        <h3 className="font-bold text-lg mb-2 text-white">ADMIN COLOR PICKER</h3>
-                        <p className="text-xs text-gray-400 mb-6">Selecione a cor primária do tema</p>
-                        <input 
-                            type="color" 
-                            className="w-full h-12 cursor-pointer mb-6 rounded-lg border-2 border-white/10 bg-transparent"
-                            onChange={(e) => {
-                                document.documentElement.style.setProperty('--primary-accent', e.target.value);
-                            }} 
-                        />
-                        <button 
-                            onClick={() => setShowColorPicker(false)}
-                            className="w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-bold text-sm transition-colors border border-white/5"
-                        >
-                            FECHAR PAINEL
-                        </button>
+                    <div className="mt-4">
+                        <LegalFooter />
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     );
 };

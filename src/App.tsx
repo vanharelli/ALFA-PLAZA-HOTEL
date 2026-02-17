@@ -1,17 +1,18 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CheckInScreen } from './screens/CheckInScreen';
-import { TermsScreen } from './screens/TermsScreen';
+import { useSystemArmor } from './hooks/useSystemArmor';
 
 function App() {
+  useSystemArmor(); // ATIVANDO BLINDAGEM NIVEL 9
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<CheckInScreen />} />
-        <Route path="/termos" element={<TermsScreen />} />
+        <Route path="/check-in" element={<CheckInScreen />} />
+        <Route path="*" element={<CheckInScreen />} />
       </Routes>
     </Router>
   );
 }
-
 export default App;

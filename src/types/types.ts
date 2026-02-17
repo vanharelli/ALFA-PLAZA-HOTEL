@@ -12,17 +12,25 @@ export interface HotelConfig {
   licenseKey?: string;
   createdAt?: string;
   backgroundUrl?: string;
+  slug?: string;
+  email?: string;
+  phone?: string;
+  logo?: string;
+  background?: string;
+  legalTerm?: string;
+  pixKey?: string;
+  active?: boolean;
 }
 
 export const DEFAULT_HOTEL: HotelConfig = {
-  id: 'alpha-plaza',
-  name: 'Ficha Cadastral',
-  subtitle: 'Alpha Plaza Hotel',
-  whatsapp: '5561982062229',
+  id: 'alfa-plaza-Hotel',
+  name: 'check-in digital.',
+  subtitle: 'Alfa Plaza Hotel',
+  whatsapp: '556132639131',
   themeColor: '#D4AF37', // Gold (Standard)
   primaryColor: '#D4AF37', // Gold (Standard)
   enableMultiLanguage: true,
   enableGarage: true,
-  footerText: '© 2026 Alpha Plaza Hotel - Todos os direitos reservados',
+  footerText: '© 2026 Alfa Plaza Hotel - Todos os direitos reservados',
   backgroundUrl: 'https://static.vecteezy.com/ti/vetor-gratis/t2/8953048-abstract-elegant-gold-lines-diagonal-scene-on-black-background-template-premium-award-design-gratis-vetor.jpg'
 };
